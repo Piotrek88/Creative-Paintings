@@ -178,7 +178,7 @@ cols = st.columns(3)
 for index, item in enumerate(main_images):
     with cols[index]:
         st.image(item["image"], width=220)
-        if st.button(item["name"], use_container_width=True):
+        if st.button(item["name"]):
             st.session_state.selected_main = item["name"]
             st.session_state.generated_images = []
 
@@ -202,7 +202,7 @@ if st.session_state.selected_main in ["Zwierzaki", "Pojazdy"]:
     sub_cols = st.columns(5)
     for index, (name, path) in enumerate(sub_images.items()):
         with sub_cols[index % 5]:
-            st.image(path, use_column_width=True)
+            st.image(path)
             if st.button(name, use_container_width=True):
                 st.session_state.generated_images = [
                     generate_image(options[name] + f" #{i+1}")
