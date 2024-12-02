@@ -8,7 +8,6 @@ import os
 env = dotenv_values(".env")
 
 
-
 styl_css = """
 <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 <style>
@@ -71,35 +70,35 @@ st.session_state["previous_main"] = st.session_state.selected_main
 
 
 main_images= [
-    {"name": "Zwierzaki", "name": r"appart\zwierzaki.jpg"},
-    {"name": "Pojazdy", "name": r"appart\pojazdy.jpg"},
-    {"name": "Inne", "name": r"appart\inne.jpg"}
+    {"name": "Zwierzaki", "name": os.join(r"appart\zwierzaki.jpg")},
+    {"name": "Pojazdy", "name": os.join(r"appart\pojazdy.jpg")},
+    {"name": "Inne", "name": os.join(r"appart\inne.jpg")}
 ]
 
 sub_animal= {
-    "Pies": r"appart\pies.jpg",
-    "Kot": r"appart\kot.jpg", 
-    "Mysz": r"appart\mysz.jpg",
-    "Koń": r"appart\kon.jpg",
-    "Słoń": r"appart\slon.jpg",
-    "Żyrafa": r"appart\zyrafa.jpg", 
-    "Królik": r"appart\krolik.jpg",
-    "Krowa": r"appart\krowa.jpg",
-    "Owca": r"appart\owca.jpg",
-    "Świnia": r"appart\swinka.jpg"
+    "Pies": os.join(r"appart\pies.jpg"),
+    "Kot": os.join(r"appart\kot.jpg"), 
+    "Mysz": os.join(r"appart\mysz.jpg"),
+    "Koń": os.join(r"appart\kon.jpg"),
+    "Słoń": os.join(r"appart\slon.jpg"),
+    "Żyrafa": os.join(r"appart\zyrafa.jpg"), 
+    "Królik": os.join(r"appart\krolik.jpg"),
+    "Krowa": os.join(r"appart\krowa.jpg"),
+    "Owca": os.join(r"appart\owca.jpg"),
+    "Świnia": os.join(r"appart\swinka.jpg")
 }
 
 sub_vehicles= {
-    "Samochód": r"appart\samochod.jpg",
-    "Traktor": r"appart\traktor.jpg",
-    "Pociąg": r"appart\pociag.jpg",
-    "Cieżarówka": r"appart\ciezarowka.jpg",
-    "Samolot": r"appart\samolot.jpg",
-    "Karetka": r"appart\karetka.jpg",
-    "Straż": r"appart\straz.jpg",
-    "Policja": r"appart\policja.jpg",
-    "Motor": r"appart\motor.jpg",
-    "Wyścigówka": r"appart\wyscigowka.jpg"
+    "Samochód": os.join(r"appart\samochod.jpg"),
+    "Traktor": os.join(r"appart\traktor.jpg"),
+    "Pociąg": os.join(r"appart\pociag.jpg"),
+    "Cieżarówka": os.join(r"appart\ciezarowka.jpg"),
+    "Samolot": os.join(r"appart\samolot.jpg"),
+    "Karetka": os.join(r"appart\karetka.jpg"),
+    "Straż": os.join(r"appart\straz.jpg"),
+    "Policja": os.join(r"appart\policja.jpg"),
+    "Motor": os.join(r"appart\motor.jpg"),
+    "Wyścigówka": os.join(r"appart\wyscigowka.jpg")
 }
 
 
@@ -140,7 +139,7 @@ mapping= {
 #
 # Main program
 #
-image_path = os.path.join(main_images)
+
 
 # Kod zabezpieczający klucz API
 if not st.session_state.get("openai_api_key"):
@@ -149,7 +148,7 @@ if not st.session_state.get("openai_api_key"):
     else:
         col1,col2,col3 = st.columns([5, 8, 5])
         with col2:
-            st.image(image_path, use_column_width= True)
+            st.image(os.join(r"appart\BEZ TLA.png"), use_column_width= True)
         st.info("Podaj klucz API aby korzystać z Creative Paintings")
         st.session_state["openai_api_key"] = st.text_input("Klucz API", type="password")
         if st.session_state["openai_api_key"]:
@@ -164,7 +163,7 @@ openai_client = OpenAI(api_key=st.session_state["openai_api_key"])
 
 col1,col2,col3 = st.columns([5, 8, 5])
 with col2:
-    st.image(image_path, use_column_width= True)
+    st.image(os.join(r"appart\BEZ TLA.png"), use_column_width= True)
 
 st.markdown(opis_aplikacji, unsafe_allow_html=True)
 st.markdown("<br><br>", unsafe_allow_html=True)                 
@@ -209,7 +208,7 @@ if st.session_state.selected_main in ["Zwierzaki", "Pojazdy"]:
                     generate_image(options[name] + f" #{i+1}")
                     for i in range(num_images)
                 ]
-image_path = os.path.join(sub_images)
+
 # Wyświetlanie i pobieranie wygenerowanych obrazów
 for idx, image_url in enumerate(st.session_state.generated_images):
     st.image(image_url, caption=f"Obraz #{idx+1}")
