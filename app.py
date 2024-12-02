@@ -152,7 +152,7 @@ if not st.session_state.get("openai_api_key"):
         st.info("Podaj klucz API aby korzystać z Creative Paintings")
         st.session_state["openai_api_key"] = st.text_input("Klucz API", type="password")
         if st.session_state["openai_api_key"]:
-            st.experimental_rerun()
+            st.rerun()
 if not st.session_state.get("openai_api_key"):
     st.stop()
 
