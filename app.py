@@ -68,35 +68,35 @@ st.session_state["previous_main"] = st.session_state.selected_main
 
 
 main_images= [
-    {"name": "Zwierzaki", "name": r"Creative-Paintings\appart\BEZ TLA.png"},
-    {"name": "Pojazdy", "name": r"Creative-Paintings\appart\pojazdy.jpg"},
-    {"name": "Inne", "name": r"Creative-Paintings\appart\inne.jpg"}
+    {"name": "Zwierzaki", "name": r"appart\BEZ TLA.png"},
+    {"name": "Pojazdy", "name": r"appart\pojazdy.jpg"},
+    {"name": "Inne", "name": r"appart\inne.jpg"}
 ]
 
 sub_animal= {
-    "Pies": r"Creative-Paintings\appart\pies.jpg",
-    "Kot": r"Creative-Paintings\appart\kot.jpg", 
-    "Mysz": r"Creative-Paintings\appart\mysz.jpg",
-    "Koń": r"Creative-Paintings\appart\kon.jpg",
-    "Słoń": r"Creative-Paintings\appart\slon.jpg",
-    "Żyrafa": r"Creative-Paintings\appart\zyrafa.jpg", 
-    "Królik": r"Creative-Paintings\appart\krolik.jpg",
-    "Krowa": r"Creative-Paintings\appart\krowa.jpg",
-    "Owca": r"Creative-Paintings\appart\owca.jpg",
-    "Świnia": r"Creative-Paintings\appart\swinka.jpg"
+    "Pies": r"appart\pies.jpg",
+    "Kot": r"appart\kot.jpg", 
+    "Mysz": r"appart\mysz.jpg",
+    "Koń": r"appart\kon.jpg",
+    "Słoń": r"appart\slon.jpg",
+    "Żyrafa": r"appart\zyrafa.jpg", 
+    "Królik": r"appart\krolik.jpg",
+    "Krowa": r"appart\krowa.jpg",
+    "Owca": r"appart\owca.jpg",
+    "Świnia": r"appart\swinka.jpg"
 }
 
 sub_vehicles= {
-    "Samochód": r"Creative-Paintings\appart\samochod.jpg",
-    "Traktor": r"Creative-Paintings\appart\traktor.jpg",
-    "Pociąg": r"Creative-Paintings\appart\pociag.jpg",
-    "Cieżarówka": r"Creative-Paintings\appart\ciezarowka.jpg",
-    "Samolot": r"Creative-Paintings\appart\samolot.jpg",
-    "Karetka": r"Creative-Paintings\appart\karetka.jpg",
-    "Straż": r"Creative-Paintings\appart\straz.jpg",
-    "Policja": r"Creative-Paintings\appart\policja.jpg",
-    "Motor": r"Creative-Paintings\appart\motor.jpg",
-    "Wyścigówka": r"Creative-Paintings\appart\wyscigowka.jpg"
+    "Samochód": r"appart\samochod.jpg",
+    "Traktor": r"appart\traktor.jpg",
+    "Pociąg": r"appart\pociag.jpg",
+    "Cieżarówka": r"appart\ciezarowka.jpg",
+    "Samolot": r"appart\samolot.jpg",
+    "Karetka": r"appart\karetka.jpg",
+    "Straż": r"appart\straz.jpg",
+    "Policja": r"appart\policja.jpg",
+    "Motor": r"appart\motor.jpg",
+    "Wyścigówka": r"appart\wyscigowka.jpg"
 }
 
 
@@ -146,7 +146,7 @@ if not st.session_state.get("openai_api_key"):
     else:
         col1,col2,col3 = st.columns([5, 8, 5])
         with col2:
-            st.image(r"Creative-Paintings\appart\BEZ TLA.png", use_column_width= True)
+            st.image(r"appart\BEZ TLA.png", use_column_width= True)
         st.info("Podaj klucz API aby korzystać z Creative Paintings")
         st.session_state["openai_api_key"] = st.text_input("Klucz API", type="password")
         if st.session_state["openai_api_key"]:
@@ -161,7 +161,7 @@ openai_client = OpenAI(api_key=st.session_state["openai_api_key"])
 
 col1,col2,col3 = st.columns([5, 8, 5])
 with col2:
-    st.image(r"Creative-Paintings\appart\BEZ TLA.png", use_column_width= True)
+    st.image(r"appart\BEZ TLA.png", use_column_width= True)
 
 st.markdown(opis_aplikacji, unsafe_allow_html=True)
 st.markdown("<br><br>", unsafe_allow_html=True)                 
