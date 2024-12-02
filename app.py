@@ -3,8 +3,11 @@ from openai import OpenAI
 import requests
 import streamlit as st
 from PIL import Image
+import os
 
 env = dotenv_values(".env")
+
+image_path = os.path.join("appart", "BEZ TLA.png")
 
 styl_css = """
 <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
@@ -68,7 +71,7 @@ st.session_state["previous_main"] = st.session_state.selected_main
 
 
 main_images= [
-    {"name": "Zwierzaki", "name": r"appart\BEZ TLA.png"},
+    {"name": "Zwierzaki", "name": r"appart\zwierzaki.jpg"},
     {"name": "Pojazdy", "name": r"appart\pojazdy.jpg"},
     {"name": "Inne", "name": r"appart\inne.jpg"}
 ]
@@ -146,7 +149,7 @@ if not st.session_state.get("openai_api_key"):
     else:
         col1,col2,col3 = st.columns([5, 8, 5])
         with col2:
-            st.image(r"appart\BEZ TLA.png", use_column_width= True)
+            st.image(image_path, use_column_width= True)
         st.info("Podaj klucz API aby korzystać z Creative Paintings")
         st.session_state["openai_api_key"] = st.text_input("Klucz API", type="password")
         if st.session_state["openai_api_key"]:
@@ -161,7 +164,7 @@ openai_client = OpenAI(api_key=st.session_state["openai_api_key"])
 
 col1,col2,col3 = st.columns([5, 8, 5])
 with col2:
-    st.image(r"appart\BEZ TLA.png", use_column_width= True)
+    st.image(image_path, use_column_width= True)
 
 st.markdown(opis_aplikacji, unsafe_allow_html=True)
 st.markdown("<br><br>", unsafe_allow_html=True)                 
