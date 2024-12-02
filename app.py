@@ -70,35 +70,35 @@ st.session_state["previous_main"] = st.session_state.selected_main
 
 
 main_images= [
-    {"name": "Zwierzaki", "name": os.path.join(r"appart\zwierzaki.jpg")},
-    {"name": "Pojazdy", "name": os.path.join(r"appart\pojazdy.jpg")},
-    {"name": "Inne", "name": os.path.join(r"appart\inne.jpg")}
+    {"name": "Zwierzaki", "name": os.path.join(r"appart\\zwierzaki.jpg")},
+    {"name": "Pojazdy", "name": os.path.join(r"appart\\pojazdy.jpg")},
+    {"name": "Inne", "name": os.path.join(r"appart\\inne.jpg")}
 ]
 
 sub_animal= {
-    "Pies": os.path.join(r"appart\pies.jpg"),
-    "Kot": os.path.join(r"appart\kot.jpg"), 
-    "Mysz": os.path.join(r"appart\mysz.jpg"),
-    "Koń": os.path.join(r"appart\kon.jpg"),
-    "Słoń": os.path.join(r"appart\slon.jpg"),
-    "Żyrafa": os.path.join(r"appart\zyrafa.jpg"), 
-    "Królik": os.path.join(r"appart\krolik.jpg"),
-    "Krowa": os.path.join(r"appart\krowa.jpg"),
-    "Owca": os.path.join(r"appart\owca.jpg"),
-    "Świnia": os.path.join(r"appart\swinka.jpg")
+    "Pies": os.path.join(r"appart\\pies.jpg"),
+    "Kot": os.path.join(r"appart\\kot.jpg"), 
+    "Mysz": os.path.join(r"appart\\mysz.jpg"),
+    "Koń": os.path.join(r"appart\\kon.jpg"),
+    "Słoń": os.path.join(r"appart\\slon.jpg"),
+    "Żyrafa": os.path.join(r"appart\\zyrafa.jpg"), 
+    "Królik": os.path.join(r"appart\\krolik.jpg"),
+    "Krowa": os.path.join(r"appart\\krowa.jpg"),
+    "Owca": os.path.join(r"appart\\owca.jpg"),
+    "Świnia": os.path.join(r"appart\\swinka.jpg")
 }
 
 sub_vehicles= {
-    "Samochód": os.path.join(r"appart\samochod.jpg"),
-    "Traktor": os.path.join(r"appart\traktor.jpg"),
-    "Pociąg": os.path.join(r"appart\pociag.jpg"),
-    "Cieżarówka": os.path.join(r"appart\ciezarowka.jpg"),
-    "Samolot": os.path.join(r"appart\samolot.jpg"),
-    "Karetka": os.path.join(r"appart\karetka.jpg"),
-    "Straż": os.path.join(r"appart\straz.jpg"),
-    "Policja": os.path.join(r"appart\policja.jpg"),
-    "Motor": os.path.join(r"appart\motor.jpg"),
-    "Wyścigówka": os.path.join(r"appart\wyscigowka.jpg")
+    "Samochód": os.path.join(r"appart\\samochod.jpg"),
+    "Traktor": os.path.join(r"appart\\traktor.jpg"),
+    "Pociąg": os.path.join(r"appart\\pociag.jpg"),
+    "Cieżarówka": os.path.join(r"appart\\ciezarowka.jpg"),
+    "Samolot": os.path.join(r"appart\\samolot.jpg"),
+    "Karetka": os.path.join(r"appart\\karetka.jpg"),
+    "Straż": os.path.join(r"appart\\straz.jpg"),
+    "Policja": os.path.join(r"appart\\policja.jpg"),
+    "Motor": os.path.join(r"appart\\motor.jpg"),
+    "Wyścigówka": os.path.join(r"appart\\wyscigowka.jpg")
 }
 
 
@@ -148,7 +148,7 @@ if not st.session_state.get("openai_api_key"):
     else:
         col1,col2,col3 = st.columns([5, 8, 5])
         with col2:
-            st.image(os.path.join(r"appart\BEZ TLA.png"), use_column_width= True)
+            st.image(os.path.join(r"appart\\BEZ TLA.png"), use_column_width= True)
         st.info("Podaj klucz API aby korzystać z Creative Paintings")
         st.session_state["openai_api_key"] = st.text_input("Klucz API", type="password")
         if st.session_state["openai_api_key"]:
@@ -163,7 +163,7 @@ openai_client = OpenAI(api_key=st.session_state["openai_api_key"])
 
 col1,col2,col3 = st.columns([5, 8, 5])
 with col2:
-    st.image(os.path.join(r"appart\BEZ TLA.png"), use_column_width= True)
+    st.image(os.path.join(r"appart\\BEZ TLA.png"), use_column_width= True)
 
 st.markdown(opis_aplikacji, unsafe_allow_html=True)
 st.markdown("<br><br>", unsafe_allow_html=True)                 
