@@ -148,7 +148,7 @@ if not st.session_state.get("openai_api_key"):
     else:
         col1,col2,col3 = st.columns([5, 8, 5])
         with col2:
-            st.image(os.path.join("appart", "BEZ TLA.png"), use_column_width= True)
+            st.image(os.path.join("appart", "BEZ TLA.png"))
         st.info("Podaj klucz API aby korzystać z Creative Paintings")
         st.session_state["openai_api_key"] = st.text_input("Klucz API", type="password")
         if st.session_state["openai_api_key"]:
@@ -163,7 +163,7 @@ openai_client = OpenAI(api_key=st.session_state["openai_api_key"])
 
 col1,col2,col3 = st.columns([5, 8, 5])
 with col2:
-    st.image(os.path.join("appart", "BEZ TLA.png"), use_column_width= True)
+    st.image(os.path.join("appart", "BEZ TLA.png"))
 
 st.markdown(opis_aplikacji, unsafe_allow_html=True)
 st.markdown("<br><br>", unsafe_allow_html=True)                 
