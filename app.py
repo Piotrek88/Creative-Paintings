@@ -7,7 +7,7 @@ import os
 
 env = dotenv_values(".env")
 
-image_path = os.path.join("appart", "BEZ TLA.png")
+
 
 styl_css = """
 <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
@@ -140,7 +140,7 @@ mapping= {
 #
 # Main program
 #
-
+image_path = os.path.join(main_images)
 
 # Kod zabezpieczający klucz API
 if not st.session_state.get("openai_api_key"):
@@ -209,7 +209,7 @@ if st.session_state.selected_main in ["Zwierzaki", "Pojazdy"]:
                     generate_image(options[name] + f" #{i+1}")
                     for i in range(num_images)
                 ]
-
+image_path = os.path.join(sub_images)
 # Wyświetlanie i pobieranie wygenerowanych obrazów
 for idx, image_url in enumerate(st.session_state.generated_images):
     st.image(image_url, caption=f"Obraz #{idx+1}")
