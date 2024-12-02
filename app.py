@@ -68,35 +68,35 @@ st.session_state["previous_main"] = st.session_state.selected_main
 
 
 main_images= [
-    {"name": "Zwierzaki", "image": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\zwierzaki.jpg"},
-    {"name": "Pojazdy", "image": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\pojazdy.jpg"},
-    {"name": "Inne", "image": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\inne.jpg"}
+    {"name": "Zwierzaki", "name": r"Creative-Paintings\appart\BEZ TLA.png"},
+    {"name": "Pojazdy", "name": r"Creative-Paintings\appart\pojazdy.jpg"},
+    {"name": "Inne", "name": r"Creative-Paintings\appart\inne.jpg"}
 ]
 
 sub_animal= {
-    "Pies": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\pies.jpg",
-    "Kot": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\kot.jpg", 
-    "Mysz": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\mysz.jpg",
-    "Koń": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\kon.jpg",
-    "Słoń": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\slon.jpg",
-    "Żyrafa": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\zyrafa.jpg", 
-    "Królik": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\krolik.jpg",
-    "Krowa": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\krowa.jpg",
-    "Owca": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\owca.jpg",
-    "Świnia": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\swinka.jpg"
+    "Pies": r"Creative-Paintings\appart\pies.jpg",
+    "Kot": r"Creative-Paintings\appart\kot.jpg", 
+    "Mysz": r"Creative-Paintings\appart\mysz.jpg",
+    "Koń": r"Creative-Paintings\appart\kon.jpg",
+    "Słoń": r"Creative-Paintings\appart\slon.jpg",
+    "Żyrafa": r"Creative-Paintings\appart\zyrafa.jpg", 
+    "Królik": r"Creative-Paintings\appart\krolik.jpg",
+    "Krowa": r"Creative-Paintings\appart\krowa.jpg",
+    "Owca": r"Creative-Paintings\appart\owca.jpg",
+    "Świnia": r"Creative-Paintings\appart\swinka.jpg"
 }
 
 sub_vehicles= {
-    "Samochód": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\samochod.jpg",
-    "Traktor": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\traktor.jpg",
-    "Pociąg": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\pociag.jpg",
-    "Cieżarówka": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\ciezarowka.jpg",
-    "Samolot": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\samolot.jpg",
-    "Karetka": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\karetka.jpg",
-    "Straż": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\straz.jpg",
-    "Policja": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\policja.jpg",
-    "Motor": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\motor.jpg",
-    "Wyścigówka": r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\wyscigowka.jpg"
+    "Samochód": r"Creative-Paintings\appart\samochod.jpg",
+    "Traktor": r"Creative-Paintings\appart\traktor.jpg",
+    "Pociąg": r"Creative-Paintings\appart\pociag.jpg",
+    "Cieżarówka": r"Creative-Paintings\appart\ciezarowka.jpg",
+    "Samolot": r"Creative-Paintings\appart\samolot.jpg",
+    "Karetka": r"Creative-Paintings\appart\karetka.jpg",
+    "Straż": r"Creative-Paintings\appart\straz.jpg",
+    "Policja": r"Creative-Paintings\appart\policja.jpg",
+    "Motor": r"Creative-Paintings\appart\motor.jpg",
+    "Wyścigówka": r"Creative-Paintings\appart\wyscigowka.jpg"
 }
 
 
@@ -146,7 +146,7 @@ if not st.session_state.get("openai_api_key"):
     else:
         col1,col2,col3 = st.columns([5, 8, 5])
         with col2:
-            st.image(r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\BEZ TLA.png", use_column_width= True)
+            st.image(r"Creative-Paintings\appart\BEZ TLA.png", use_column_width= True)
         st.info("Podaj klucz API aby korzystać z Creative Paintings")
         st.session_state["openai_api_key"] = st.text_input("Klucz API", type="password")
         if st.session_state["openai_api_key"]:
@@ -161,7 +161,7 @@ openai_client = OpenAI(api_key=st.session_state["openai_api_key"])
 
 col1,col2,col3 = st.columns([5, 8, 5])
 with col2:
-    st.image(r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\BEZ TLA.png", use_column_width= True)
+    st.image(r"Creative-Paintings\appart\BEZ TLA.png", use_column_width= True)
 
 st.markdown(opis_aplikacji, unsafe_allow_html=True)
 st.markdown("<br><br>", unsafe_allow_html=True)                 
