@@ -6,23 +6,6 @@ from PIL import Image
 
 env = dotenv_values(".env")
 
-# Kod zabezpieczający klucz API
-if not st.session_state.get("openai_api_key"):
-    if "OPENAI_API_KEY" in env:
-        st.session_state["openai_api_key"] = env["OPENAI_API_KEY"]
-    else:
-        col1,col2,col3 = st.columns([5, 8, 5])
-        with col2:
-            st.image(r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\BEZ TLA.png", use_column_width= True)
-        st.info("Podaj klucz API aby korzystać z Creative Paintings")
-        st.session_state["openai_api_key"] = st.text_input("Klucz API", type="password")
-        if st.session_state["openai_api_key"]:
-            st.experimental_rerun()
-if not st.session_state.get("openai_api_key"):
-    st.stop()
-
-openai_client = OpenAI(api_key=st.session_state["openai_api_key"])
-
 styl_css = """
 <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 <style>
@@ -154,6 +137,28 @@ mapping= {
 #
 # Main program
 #
+
+
+# Kod zabezpieczający klucz API
+if not st.session_state.get("openai_api_key"):
+    if "OPENAI_API_KEY" in env:
+        st.session_state["openai_api_key"] = env["OPENAI_API_KEY"]
+    else:
+        col1,col2,col3 = st.columns([5, 8, 5])
+        with col2:
+            st.image(r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\BEZ TLA.png", use_column_width= True)
+        st.info("Podaj klucz API aby korzystać z Creative Paintings")
+        st.session_state["openai_api_key"] = st.text_input("Klucz API", type="password")
+        if st.session_state["openai_api_key"]:
+            st.experimental_rerun()
+if not st.session_state.get("openai_api_key"):
+    st.stop()
+
+openai_client = OpenAI(api_key=st.session_state["openai_api_key"])
+
+
+
+
 col1,col2,col3 = st.columns([5, 8, 5])
 with col2:
     st.image(r"C:\Users\ppawl\OneDrive\Pulpit\CreativePaintings\appart\BEZ TLA.png", use_column_width= True)
