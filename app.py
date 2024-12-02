@@ -177,7 +177,7 @@ num_images = mapping[selected_option]
 cols = st.columns(3)
 for index, item in enumerate(main_images):
     with cols[index]:
-        st.image(item["image"], width=220)
+        st.image(os.path.join(main_images), width=220)
         if st.button(item["name"], use_container_width=True):
             st.session_state.selected_main = item["name"]
             st.session_state.generated_images = []
