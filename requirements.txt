@@ -1,5 +1,6 @@
+pyton = 3.11
 pyton-dotenv
 openai
 requests
 streamlit
-PIL
+Pillow
