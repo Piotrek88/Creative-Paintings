@@ -53,22 +53,6 @@ def download_image(image_url):
     else:
         raise Exception("Pobieranie obrazu nie powiodło się.")
 
-
-
-# Inicjalizacja stanu Streamlit
-if 'selected_main' not in st.session_state:
-    st.session_state.selected_main = None
-if 'generated_images' not in st.session_state:
-    st.session_state.generated_images = []
-
-# Zmiana kategorii resetuje obrazy tylko wtedy, gdy użytkownik zmieni wybór
-if st.session_state.selected_main != st.session_state.get("previous_main", None):
-    st.session_state.generated_images = []
-
-st.session_state["previous_main"] = st.session_state.selected_main
-
-
-
 main_images= [
     {"name": "Zwierzaki", "image": os.path.join("appart", "zwierzaki.jpg")},
     {"name": "Pojazdy", "image": os.path.join("appart", "pojazdy.jpg")},
@@ -158,6 +142,18 @@ if not st.session_state.get("openai_api_key"):
 
 openai_client = OpenAI(api_key=st.session_state["openai_api_key"])
 
+
+# Inicjalizacja stanu Streamlit
+if 'selected_main' not in st.session_state:
+    st.session_state.selected_main = None
+if 'generated_images' not in st.session_state:
+    st.session_state.generated_images = []
+
+# Zmiana kategorii resetuje obrazy tylko wtedy, gdy użytkownik zmieni wybór
+if st.session_state.selected_main != st.session_state.get("previous_main", None):
+    st.session_state.generated_images = []
+
+st.session_state["previous_main"] = st.session_state.selected_main
 
 
 
