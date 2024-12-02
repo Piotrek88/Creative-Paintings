@@ -1,5 +1,5 @@
-pyton = 3.11
-pyton-dotenv
+python = 3.11
+python-dotenv
 openai
 requests
 streamlit
