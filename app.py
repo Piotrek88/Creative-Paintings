@@ -87,26 +87,26 @@ sub_vehicles= {
 max_chars= 30
 
 options = {
-    "Pies": "czarno-biały obraz z wiekszą przewagą białego, bez innych kolorowych elementów, białe tło, jedynie czarne linie bez dodatkowych detali, pies, losowa czarno-biała sceneria",
-    "Kot": "białe tło, kolorowanka rysowana czarnymi liniami, kot, losowa sceneria, nie pokazuj dodatkowych elementów które nie są kolorowanką", 
-    "Mysz": "białe tło, czarne linie, kolorowanka dla dzieci, mysz, losowa sceneria",
-    "Koń": "czarno-biały obraz, bez innych kolorowych elementów, jedynie czarne linie bez dodatkowych detali, koń, losowa czarno-biała sceneria dla danego zwierzęcia",
-    "Słoń": "czarno-biały obraz, bez innych kolorowych elementów, jedynie czarne linie bez dodatkowych detali, słoń, losowa czarno-biała sceneria",
-    "Żyrafa": "black and white line art, żyrafa, losowa czarno-biała sceneria dla danego zwierzęcia",
-    "Królik": "białe tło, czarne linie, kolorowanka dla dzieci, królik, losowa sceneria",
-    "Krowa": "black and white line art, bez innych kolorowych elementów, jedynie czarne linie bez dodatkowych detali, krowa, losowa czarno-biała sceneria dla danego zwierzęcia",
-    "Owca": "białe tło, czarne linie, kolorowanka dla dzieci, owca, losowa sceneria",
-    "Świnia": "czarno-biały obraz, bez innych kolorowych elementów, jedynie czarne linie bez dodatkowych detali, świnia, losowa czarno-biała sceneria dla danego zwierzęcia",
-    "Samochód": "białe tło, czarne linie, kolorowanka dla dzieci, samochód, losowa sceneria",
-    "Traktor": "białe tło, czarne linie, kolorowanka dla dzieci, traktor, losowa sceneria",
-    "Pociąg": "białe tło, czarne linie, kolorowanka dla dzieci, pociąg, losowa sceneria",
-    "Cieżarówka": "białe tło, czarne linie, kolorowanka dla dzieci, ciężarówka, losowa sceneria",
-    "Samolot": "białe tło, czarne linie, kolorowanka dla dzieci, samolot, losowa sceneria",
-    "Karetka": "białe tło, czarne linie, kolorowanka dla dzieci, karetka, losowa sceneria",
-    "Straż": "białe tło, czarne linie, kolorowanka dla dzieci, wóz strażacki, losowa sceneria",
-    "Policja": "białe tło, czarne linie, kolorowanka dla dzieci, radiowóz, losowa sceneria",
-    "Motor": "białe tło, czarne linie, kolorowanka dla dzieci, motor, losowa sceneria",
-    "Wyścigówka": "białe tło, czarne linie, kolorowanka dla dzieci, wyścigówka, losowa sceneria"
+    "Pies": "black and white line art, dog, losowa czarno-biała sceneria dla danego zwierzęcia",
+    "Kot": "black and white line art, cat, losowa czarno-biała sceneria dla danego zwierzęcia",
+    "Mysz": "black and white line art, mouse, losowa czarno-biała sceneria dla danego zwierzęcia",
+    "Koń": "black and white line art, horse, losowa czarno-biała sceneria dla danego zwierzęcia",
+    "Słoń": "black and white line art, elephant, losowa czarno-biała sceneria dla danego zwierzęcia",
+    "Żyrafa": "black and white line art, giraffe, losowa czarno-biała sceneria dla danego zwierzęcia",
+    "Królik": "black and white line art, rabbit, losowa czarno-biała sceneria dla danego zwierzęcia",
+    "Krowa": "black and white line art, cow, losowa czarno-biała sceneria dla danego zwierzęcia",
+    "Owca": "black and white line art, sheep, losowa czarno-biała sceneria dla danego zwierzęcia",
+    "Świnia": "black and white line art, pig, losowa czarno-biała sceneria dla danego zwierzęcia",
+    "Samochód": "black and white line art, car, losowa czarno-biała sceneria dla danego pojazdu",
+    "Traktor": "black and white line art, traktor, losowa czarno-biała sceneria dla danego pojazdu",
+    "Pociąg": "black and white line art, train, losowa czarno-biała sceneria dla danego pojazdu",
+    "Cieżarówka": "black and white line art, Cieżarówka, losowa czarno-biała sceneria dla danego pojazdu",
+    "Samolot": "black and white line art, airplane, losowa czarno-biała sceneria dla danego pojazdu",
+    "Karetka": "black and white line art, karetka, losowa czarno-biała sceneria dla danego pojazdu",
+    "Straż": "black and white line art, wóz strażacki, losowa czarno-biała sceneria dla danego pojazdu",
+    "Policja": "black and white line art, radiowóz, losowa czarno-biała sceneria dla danego pojazdu",
+    "Motor": "black and white line art, motorbike, losowa czarno-biała sceneria dla danego pojazdu",
+    "Wyścigówka": "black and white line art, wyścigówka, losowa czarno-biała sceneria dla danego pojazdu",
 }
 
 
@@ -151,13 +151,13 @@ for index, item in enumerate(main_images):
 
 # Logika dla wyboru kategorii "Inne"
 if 'selected_main' in st.session_state and st.session_state.selected_main == "Inne":
-    base_prompt = "białe tło, styl kolorowanki rysowany czarnymi liniami, losowa sceneria"
+    base_prompt = "black and white line art, losowa czarno-biała sceneria dla danego"
     user_input = st.text_area("Napisz jaki obrazek chcesz wygenerować:", height=200, max_chars=30)
     st.session_state['user_input'] = user_input
     is_disabled = not st.session_state['user_input'].strip()
 
     if st.button("Wygeneruj obraz", disabled=is_disabled) and st.session_state['user_input'].strip():
-        image_url = generate_image(f"{base_prompt}, {st.session_state['user_input']}")
+        image_url = generate_image(f"{base_prompt} + ('') + {st.session_state['user_input']}")
         st.session_state['generated_images'].append(("Własny obraz", image_url))
 
 # Logika dla podkategorii Zwierzaki lub Pojazdy
@@ -171,9 +171,8 @@ if 'selected_main' in st.session_state and st.session_state.selected_main in ["Z
                 image_url = generate_image(options[name] + f" Obraz: {name}")
                 st.session_state['generated_images'].append((name, image_url))
 
-# Wyświetlanie i pobieranie wygenerowanego obrazu
+# Wyświetlanie i pobieranie obrazu
 if st.session_state['generated_images']:
-    # Pobierz pierwszy (i jedyny) obraz z listy
     name, image_url = st.session_state['generated_images'][-1]
 
     st.image(image_url, caption=f"Obraz {name}")
