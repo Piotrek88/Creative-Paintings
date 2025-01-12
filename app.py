@@ -87,16 +87,16 @@ sub_vehicles= {
 max_chars= 30
 
 options = {
-    "Pies": "białe tło, czarne linie, kolorowanka dla dzieci, pies, losowa sceneria",
-    "Kot": "białe tło, czarne linie, kolorowanka dla dzieci, kot, losowa sceneria", 
+    "Pies": "czarno-biały obraz z wiekszą przewagą białego, bez innych kolorowych elementów, białe tło, jedynie czarne linie bez dodatkowych detali, pies, losowa czarno-biała sceneria",
+    "Kot": "białe tło, kolorowanka rysowana czarnymi liniami, kot, losowa sceneria, nie pokazuj dodatkowych elementów które nie są kolorowanką", 
     "Mysz": "białe tło, czarne linie, kolorowanka dla dzieci, mysz, losowa sceneria",
-    "Koń": "białe tło, czarne linie, kolorowanka dla dzieci, koń, losowa sceneria",
-    "Słoń": "białe tło, czarne linie, kolorowanka dla dzieci, słoń, losowa sceneria",
-    "Żyrafa": "białe tło, czarne linie, kolorowanka dla dzieci, zyrafa, losowa sceneria",
+    "Koń": "czarno-biały obraz, bez innych kolorowych elementów, jedynie czarne linie bez dodatkowych detali, koń, losowa czarno-biała sceneria dla danego zwierzęcia",
+    "Słoń": "czarno-biały obraz, bez innych kolorowych elementów, jedynie czarne linie bez dodatkowych detali, słoń, losowa czarno-biała sceneria",
+    "Żyrafa": "black and white line art, żyrafa, losowa czarno-biała sceneria dla danego zwierzęcia",
     "Królik": "białe tło, czarne linie, kolorowanka dla dzieci, królik, losowa sceneria",
-    "Krowa": "białe tło, czarne linie, kolorowanka dla dzieci, krowa, losowa sceneria",
+    "Krowa": "black and white line art, bez innych kolorowych elementów, jedynie czarne linie bez dodatkowych detali, krowa, losowa czarno-biała sceneria dla danego zwierzęcia",
     "Owca": "białe tło, czarne linie, kolorowanka dla dzieci, owca, losowa sceneria",
-    "Świnia": "białe tło, czarne linie, kolorowanka dla dzieci, świnia, losowa sceneria",
+    "Świnia": "czarno-biały obraz, bez innych kolorowych elementów, jedynie czarne linie bez dodatkowych detali, świnia, losowa czarno-biała sceneria dla danego zwierzęcia",
     "Samochód": "białe tło, czarne linie, kolorowanka dla dzieci, samochód, losowa sceneria",
     "Traktor": "białe tło, czarne linie, kolorowanka dla dzieci, traktor, losowa sceneria",
     "Pociąg": "białe tło, czarne linie, kolorowanka dla dzieci, pociąg, losowa sceneria",
@@ -117,13 +117,14 @@ openai_client = OpenAI(api_key=st.secrets["openai_api_key"])
 # Inicjalizacja stanu Streamlit
 if 'selected_main' not in st.session_state:
     st.session_state.selected_main = None
+
+# Przygotowanie stanu dla generowanych obrazów
 if 'generated_images' not in st.session_state:
-    st.session_state.generated_images = []
+    st.session_state['generated_images'] = []
 
 # Zmiana kategorii resetuje obrazy tylko wtedy, gdy użytkownik zmieni wybór
 if st.session_state.selected_main != st.session_state.get("previous_main", None):
     st.session_state.generated_images = []
-
 st.session_state["previous_main"] = st.session_state.selected_main
 
 
@@ -149,20 +150,18 @@ for index, item in enumerate(main_images):
             st.session_state.generated_images = []
 
 # Logika dla wyboru kategorii "Inne"
-if st.session_state.selected_main == "Inne":
-    base_prompt = "białe tło, czarne linie, kolorowanka dla dzieci, losowa sceneria"
+if 'selected_main' in st.session_state and st.session_state.selected_main == "Inne":
+    base_prompt = "białe tło, styl kolorowanki rysowany czarnymi liniami, losowa sceneria"
     user_input = st.text_area("Napisz jaki obrazek chcesz wygenerować:", height=200, max_chars=30)
+    st.session_state['user_input'] = user_input
+    is_disabled = not st.session_state['user_input'].strip()
 
-    
-    if st.button("Wygeneruj obrazki") and user_input.strip():
-            st.session_state.generated_images = [
-            generate_image(f"{base_prompt}, {user_input} #{user_input+1}")
-            ]
-            
-
+    if st.button("Wygeneruj obraz", disabled=is_disabled) and st.session_state['user_input'].strip():
+        image_url = generate_image(f"{base_prompt}, {st.session_state['user_input']}")
+        st.session_state['generated_images'].append(("Własny obraz", image_url))
 
 # Logika dla podkategorii Zwierzaki lub Pojazdy
-if st.session_state.selected_main in ["Zwierzaki", "Pojazdy"]:
+if 'selected_main' in st.session_state and st.session_state.selected_main in ["Zwierzaki", "Pojazdy"]:
     sub_images = sub_animal if st.session_state.selected_main == "Zwierzaki" else sub_vehicles
     sub_cols = st.columns(5)
     for index, (name, path) in enumerate(sub_images.items()):
@@ -170,21 +169,26 @@ if st.session_state.selected_main in ["Zwierzaki", "Pojazdy"]:
             st.image(path)
             if st.button(name, use_container_width=True):
                 image_url = generate_image(options[name] + f" Obraz: {name}")
-                st.session_state.generated_images.append((name, image_url))
-                   
-                
+                st.session_state['generated_images'].append((name, image_url))
 
+# Wyświetlanie i pobieranie wygenerowanego obrazu
+if st.session_state['generated_images']:
+    # Pobierz pierwszy (i jedyny) obraz z listy
+    name, image_url = st.session_state['generated_images'][-1]
 
-for idx, (name, image_url) in enumerate(st.session_state.generated_images):
     st.image(image_url, caption=f"Obraz {name}")
-    image_data = download_image(image_url)
-    col1, col2, col3 = st.columns(3)
-    with col2:
-        st.download_button(
-            label=f"Pobierz {name}",
-            data=image_data,
-            file_name=f"{name}.png",
-            mime="image/png",
-            key=f"download_{name}_{idx}"
-        )
-    
+
+    try:
+        image_data = download_image(image_url)
+        # Ustawienie przycisku do pobrania obrazu
+        col1, col2, col3 = st.columns(3)
+        with col2:
+            st.download_button(
+                label=f"Pobierz {name}",
+                data=image_data,
+                file_name=f"{name}.png",
+                mime="image/png",
+                key=f"download_{name}"
+            )
+    except Exception as e:
+        st.error(f"Nie udało się pobrać obrazu: {e}")
