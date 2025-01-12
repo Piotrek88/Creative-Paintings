@@ -1,11 +1,9 @@
-from dotenv import dotenv_values
 from openai import OpenAI
 import requests
 import streamlit as st
 from PIL import Image
 import os
 
-env = dotenv_values(".env")
 
 
 styl_css = """
@@ -29,7 +27,7 @@ st.markdown(styl_css, unsafe_allow_html=True)
 
 opis_aplikacji = """
 <div class="custom-font">
-Aplikacja do generowania kolorowanek
+Aplikacja do generowania kolorowanek.
 </div>
 """
 
@@ -86,7 +84,7 @@ sub_vehicles= {
 }
 
 
-max_chars= 150
+max_chars= 30
 
 options = {
     "Pies": "białe tło, czarne linie, kolorowanka dla dzieci, pies, losowa sceneria",
@@ -113,34 +111,7 @@ options = {
 
 
 
-mapping= {
-    "Jeden": 1,
-    "Dwa" : 2,
-    "Trzy": 3
-}
-
-
-#
-# Main program
-#
-
-
-# Kod zabezpieczający klucz API
-if not st.session_state.get("openai_api_key"):
-    if "OPENAI_API_KEY" in env:
-        st.session_state["openai_api_key"] = env["OPENAI_API_KEY"]
-    else:
-        col1,col2,col3 = st.columns([5, 8, 5])
-        with col2:
-            st.image(os.path.join("appart", "BEZ TLA.png"))
-        st.info("Podaj klucz API aby korzystać z Creative Paintings")
-        st.session_state["openai_api_key"] = st.text_input("Klucz API", type="password")
-        if st.session_state["openai_api_key"]:
-            st.rerun()
-if not st.session_state.get("openai_api_key"):
-    st.stop()
-
-openai_client = OpenAI(api_key=st.session_state["openai_api_key"])
+openai_client = OpenAI(api_key=st.secrets["openai_api_key"])
 
 
 # Inicjalizacja stanu Streamlit
@@ -157,16 +128,15 @@ st.session_state["previous_main"] = st.session_state.selected_main
 
 
 
+#### MAIN ####
+
+
 col1,col2,col3 = st.columns([5, 8, 5])
 with col2:
     st.image(os.path.join("appart", "BEZ TLA.png"))
 
 st.markdown(opis_aplikacji, unsafe_allow_html=True)
-st.markdown("<br><br>", unsafe_allow_html=True)                 
-selected_option = st.selectbox("Liczba obrazków do wygenerowania:", ["Jeden", "Dwa", "Trzy"])
-num_images = mapping[selected_option]
-
-
+st.markdown("<br><br>", unsafe_allow_html=True)   
 
 
 # Wyświetlanie głównych kategorii
@@ -181,13 +151,12 @@ for index, item in enumerate(main_images):
 # Logika dla wyboru kategorii "Inne"
 if st.session_state.selected_main == "Inne":
     base_prompt = "białe tło, czarne linie, kolorowanka dla dzieci, losowa sceneria"
-    user_input = st.text_area("Napisz jaki obrazek chcesz wygenerować:", height=200)
+    user_input = st.text_area("Napisz jaki obrazek chcesz wygenerować:", height=200, max_chars=30)
 
     
     if st.button("Wygeneruj obrazki") and user_input.strip():
             st.session_state.generated_images = [
-            generate_image(f"{base_prompt}, {user_input} #{i+1}")
-            for i in range(num_images)
+            generate_image(f"{base_prompt}, {user_input} #{user_input+1}")
             ]
             
 
@@ -200,19 +169,22 @@ if st.session_state.selected_main in ["Zwierzaki", "Pojazdy"]:
         with sub_cols[index % 5]:
             st.image(path)
             if st.button(name, use_container_width=True):
-                st.session_state.generated_images = [
-                    generate_image(options[name] + f" #{i+1}")
-                    for i in range(num_images)
-                ]
+                image_url = generate_image(options[name] + f" Obraz: {name}")
+                st.session_state.generated_images.append((name, image_url))
+                   
+                
 
-# Wyświetlanie i pobieranie wygenerowanych obrazów
-for idx, image_url in enumerate(st.session_state.generated_images):
-    st.image(image_url, caption=f"Obraz #{idx+1}")
+
+for idx, (name, image_url) in enumerate(st.session_state.generated_images):
+    st.image(image_url, caption=f"Obraz {name}")
     image_data = download_image(image_url)
-    st.download_button(
-        label=f"Pobierz Obraz #{idx+1}",
-        data=image_data,
-        file_name=f"obraz_{idx+1}.png",
-        mime="image/png",
-        key=f"download_{idx}_{image_url}"
-    )
+    col1, col2, col3 = st.columns(3)
+    with col2:
+        st.download_button(
+            label=f"Pobierz {name}",
+            data=image_data,
+            file_name=f"{name}.png",
+            mime="image/png",
+            key=f"download_{name}_{idx}"
+        )
+    
