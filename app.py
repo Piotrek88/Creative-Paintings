@@ -190,7 +190,7 @@ options = {
 
 
 
-openai_client = OpenAI(api_key=st.secrets["openai_api_key"])
+openai_client = OpenAI(api_key=os.environ.get["openai_api_key"])
 
 
 # Inicjalizacja stanu Streamlit
