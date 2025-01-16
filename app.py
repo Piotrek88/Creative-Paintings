@@ -7,7 +7,10 @@ import os
 from st_paywall import add_auth   # type: ignore
 from datetime import datetime, timezone
 import pandas as pd # type: ignore
+from dotenv import load_dotenv
 
+
+load_dotenv()
 
 styl_css = """
 <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
