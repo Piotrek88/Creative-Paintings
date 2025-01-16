@@ -2,4 +2,6 @@ openai
 requests
 streamlit
 Pillow
-openai
+psycopg2
+st-paywall
+pandas
