@@ -47,12 +47,12 @@ PREMIUM_USER_MAX_PIC = 30
 
 def get_connection():
     return psycopg2.connect(
-        dbname=st.secrets["database"],
-        user=st.secrets["username"],
-        password=st.secrets["password"],
-        host=st.secrets["host"],
-        port=st.secrets["port"],
-        sslmode=st.secrets["sslmode"]
+        dbname=os.environ["database"],
+        user=os.environ["username"],
+        password=os.environ["password"],
+        host=os.environ["host"],
+        port=os.environ["port"],
+        sslmode=os.environ["sslmode"]
     )
 
 def get_current_month_usage_df(email):
@@ -242,7 +242,7 @@ st.markdown("<br><br>", unsafe_allow_html=True)
 
 try:
     add_auth(
-        required=True,
+        required=False,
         login_sidebar=True,
         login_button_text="Log in",
     )
