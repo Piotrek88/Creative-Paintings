@@ -7,10 +7,23 @@ import os
 from st_paywall import add_auth   # type: ignore
 from datetime import datetime, timezone
 import pandas as pd # type: ignore
-from dotenv import load_dotenv
+
+def generate_secrets_toml():
+    # Define the path for the secrets.toml file
+    secrets_path = '.streamlit/secrets.toml'
+    
+    # Open the file in write mode
+    with open(secrets_path, 'w') as file:
+        # Iterate over environment variables
+        for key, value in os.environ.items():
+            # Write each environment variable in TOML format
+            file.write(f'{key} = "{value}"\n')
+
+if __name__ == "__main__":
+    generate_secrets_toml()
 
 
-load_dotenv()
+
 
 styl_css = """
 <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
@@ -47,12 +60,12 @@ PREMIUM_USER_MAX_PIC = 30
 
 def get_connection():
     return psycopg2.connect(
-        dbname=os.environ["database"],
-        user=os.environ["username"],
-        password=os.environ["password"],
-        host=os.environ["host"],
-        port=os.environ["port"],
-        sslmode=os.environ["sslmode"]
+        dbname=st.secrets["database"],
+        user=st.secrets["username"],
+        password=st.secrets["password"],
+        host=st.secrets["host"],
+        port=st.secrets["port"],
+        sslmode=st.secrets["sslmode"]
     )
 
 def get_current_month_usage_df(email):
@@ -193,7 +206,7 @@ options = {
 
 
 
-openai_client = OpenAI(api_key=os.environ.get["openai_api_key"])
+openai_client = OpenAI(api_key=st.secrets["openai_api_key"])
 
 
 # Inicjalizacja stanu Streamlit
