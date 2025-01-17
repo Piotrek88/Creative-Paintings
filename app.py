@@ -306,11 +306,6 @@ if st.session_state.get('email'):
 
 
 with st.sidebar:
-    if "email" in st.session_state:
-        if st.button("Log out"):
-            # Wyczyść stany logowania
-            st.session_state.pop("email", None)
-            st.rerun()   
     st.image(os.path.join("appart", "BEZ TLA.png"), width=180)
     st.link_button("Polityka prywatności", "https://garr.fra1.cdn.digitaloceanspaces.com/CreativePaintings/privacy_policy.pdf")
     st.link_button("Regulamin", "https://garr.fra1.cdn.digitaloceanspaces.com/CreativePaintings/regulations.pdf")
