@@ -230,6 +230,24 @@ def allow_usage():
 
 #### MAIN ####
 
+with st.sidebar:
+    st.image(os.path.join("appart", "BEZ TLA.png"), width=180)
+    st.link_button("Polityka prywatności", "https://garr.fra1.cdn.digitaloceanspaces.com/CreativePaintings/privacy_policy.pdf")
+    st.link_button("Regulamin", "https://garr.fra1.cdn.digitaloceanspaces.com/CreativePaintings/regulations.pdf")
+
+    if st.session_state.get('email'):
+        account, stats = st.tabs(["Konto", "Statystyki"])
+        with account:
+            st.write(f"Jesteś zalogowano jako: {st.session_state['email']}")
+            st.write(f"Aktywna subskrypcja: {'**Premium**' if st.session_state.get('user_subscribed') else '**Darmowa**'}")
+
+        with stats:
+            usage_df = get_current_month_usage_df(st.session_state['email'])
+            st.write(f"Wykorzystane obrazki")
+
+            max_pic = FREE_USER_MAX_PIC if not st.session_state.get("user_subscribed") else PREMIUM_USER_MAX_PIC
+            st.metric(" ", f"{usage_df['generations'].sum()} / {max_pic}")
+
 
 col1,col2,col3 = st.columns([5, 8, 5])
 with col2:
@@ -303,23 +321,4 @@ if st.session_state.get('email'):
             except Exception as e:
                 st.error(f"Nie udało się pobrać obrazu: {e}")
 
-
-
-with st.sidebar:
-    st.image(os.path.join("appart", "BEZ TLA.png"), width=180)
-    st.link_button("Polityka prywatności", "https://garr.fra1.cdn.digitaloceanspaces.com/CreativePaintings/privacy_policy.pdf")
-    st.link_button("Regulamin", "https://garr.fra1.cdn.digitaloceanspaces.com/CreativePaintings/regulations.pdf")
-
-    if st.session_state.get('email'):
-        account, stats = st.tabs(["Konto", "Statystyki"])
-        with account:
-            st.write(f"Jesteś zalogowano jako: {st.session_state['email']}")
-            st.write(f"Aktywna subskrypcja: {'**Premium**' if st.session_state.get('user_subscribed') else '**Darmowa**'}")
-
-        with stats:
-            usage_df = get_current_month_usage_df(st.session_state['email'])
-            st.write(f"Wykorzystane obrazki")
-
-            max_pic = FREE_USER_MAX_PIC if not st.session_state.get("user_subscribed") else PREMIUM_USER_MAX_PIC
-            st.metric(" ", f"{usage_df['generations'].sum()} / {max_pic}")
     
