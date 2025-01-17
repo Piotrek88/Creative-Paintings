@@ -320,11 +320,11 @@ with st.sidebar:
             max_pic = FREE_USER_MAX_PIC if not st.session_state.get("user_subscribed") else PREMIUM_USER_MAX_PIC
             st.metric(" ", f"{usage_df['generations'].sum()} / {max_pic}")
 
-         # Dodanie przycisku "Subscribe Now!"
-        subscribe_url = "https://buymeacoffee.com/piotrek88/membership"
-        st.write(f"[Subscribe Now!]({subscribe_url})", unsafe_allow_html=True)
+        #  # Dodanie przycisku "Subscribe Now!"
+        # subscribe_url = "https://buymeacoffee.com/piotrek88/membership"
+        # st.write(f"[Subscribe Now!]({subscribe_url})", unsafe_allow_html=True)
 
-        if st.button("Log off"):
-            # Wyczyść stany logowania
-            st.session_state.pop("email", None)
-            st.rerun()
+        # if st.button("Log off"):
+        #     # Wyczyść stany logowania
+        #     st.session_state.pop("email", None)
+        #     st.rerun()
