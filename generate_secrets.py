@@ -1,5 +1,12 @@
 import os
 
+secrets_dir = '.streamlit'
+secrets_path = os.path.join(secrets_dir, 'secrets.toml')
+
+# Sprawdź, czy katalog istnieje, jeśli nie - utwórz go
+if not os.path.exists(secrets_dir):
+    os.makedirs(secrets_dir)
+
 def generate_secrets_toml():
     # Define the path for the secrets.toml file
     secrets_path = '.streamlit/secrets.toml'
