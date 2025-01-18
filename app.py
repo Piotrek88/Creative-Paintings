@@ -252,108 +252,96 @@ def is_content_appropriate(user_input, openai_client):
 
 #### MAIN ####
 
-col1,col2,col3 = st.columns([5, 8, 5])
-with col2:
-    st.image(os.path.join("appart", "BEZ TLA.png"))
-st.markdown(opis_aplikacji, unsafe_allow_html=True)
-st.markdown("<br><br>", unsafe_allow_html=True)   
+def main():
+    col1, col2, col3 = st.columns([5, 8, 5])
+    with col2:
+        st.image(os.path.join("appart", "BEZ TLA.png"))
+    st.markdown(opis_aplikacji, unsafe_allow_html=True)
+    st.markdown("<br><br>", unsafe_allow_html=True)   
 
-try:
-    add_auth(
-        required=False,
-        login_sidebar=True,
-        login_button_text="Log in",
-    )
-except KeyError:
-    pass
-
-if st.session_state.get('email'):
-    allow, msg = allow_usage()
-    if not allow:
-        st.error(msg)
-# Wyświetlanie głównych kategorii
-    else:
-        cols = st.columns(3)
-        for index, item in enumerate(main_images):
-            with cols[index]:
-                st.image(item["image"], width=220)
-                if st.button(item["name"], use_container_width=True):
-                    st.session_state.selected_main = item["name"]
-                    st.session_state.generated_images = []
-
-        # Logika dla wyboru kategorii "Inne"
-        if 'selected_main' in st.session_state and st.session_state.selected_main == "Inne":
-            base_prompt = "black and white line art, losowa czarno-biała sceneria dla danego"
-            user_input = st.text_area("Napisz jaki obrazek chcesz wygenerować:", height=200, max_chars=30)
-            st.session_state['user_input'] = user_input
-            is_disabled = not st.session_state['user_input'].strip()
-
-        if st.button("Wygeneruj obraz", disabled=is_disabled) and st.session_state['user_input'].strip():
-            
-            try:
-                if is_content_appropriate(user_input, openai_client):
-                    image_url = generate_image(f"{base_prompt} {st.session_state['user_input']}")
-                    st.session_state['generated_images'].append(("Własny obraz", image_url))
-                else:
-                    st.warning("Podany tekst nie jest odpowiedni. Proszę spróbować ponownie.")
-            except Exception as e:
-                st.error(f"Wystąpił błąd: {str(e)}")
-
-        # Logika dla podkategorii Zwierzaki lub Pojazdy
-        if 'selected_main' in st.session_state and st.session_state.selected_main in ["Zwierzaki", "Pojazdy"]:
-            sub_images = sub_animal if st.session_state.selected_main == "Zwierzaki" else sub_vehicles
-            sub_cols = st.columns(5)
-            for index, (name, path) in enumerate(sub_images.items()):
-                with sub_cols[index % 5]:
-                    st.image(path)
-                    if st.button(name, use_container_width=True):
-                        image_url = generate_image(options[name] + f" Obraz: {name}")
-                        st.session_state['generated_images'].append((name, image_url))
-
-        # Wyświetlanie i pobieranie obrazu
-        if st.session_state['generated_images']:
-            name, image_url = st.session_state['generated_images'][-1]
-
-            st.image(image_url, caption=f"Obraz {name}")
-
-            try:
-                image_data = download_image(image_url)
-                # Ustawienie przycisku do pobrania obrazu
-                col1, col2, col3 = st.columns(3)
-                with col2:
-                    st.download_button(
-                        label=f"Pobierz {name}",
-                        data=image_data,
-                        file_name=f"{name}.png",
-                        mime="image/png",
-                        key=f"download_{name}"
-                    )
-            except Exception as e:
-                st.error(f"Nie udało się pobrać obrazu: {e}")
-
-with st.sidebar:
-    st.image(os.path.join("appart", "BEZ TLA.png"), width=180)
-    st.link_button("Polityka prywatności", "https://garr.fra1.cdn.digitaloceanspaces.com/CreativePaintings/privacy_policy.pdf")
-    st.link_button("Regulamin", "https://garr.fra1.cdn.digitaloceanspaces.com/CreativePaintings/regulations.pdf")
+    try:
+        add_auth(
+            required=False,
+            login_sidebar=True,
+            login_button_text="Log in",
+        )
+    except KeyError:
+        pass
 
     if st.session_state.get('email'):
-        account, stats = st.tabs(["Konto", "Statystyki"])
-        with account:
-            st.write(f"Jesteś zalogowano jako: {st.session_state['email']}")
-            st.write(f"Aktywna subskrypcja: {'**Premium**' if st.session_state.get('user_subscribed') else '**Darmowa**'}")
+        allow, msg = allow_usage()
+        if not allow:
+            st.error(msg)
+        else:
+            cols = st.columns(3)
+            for index, item in enumerate(main_images):
+                with cols[index]:
+                    st.image(item["image"], width=220)
+                    if st.button(item["name"], use_container_width=True):
+                        st.session_state.selected_main = item["name"]
+                        st.session_state.generated_images = []
 
-        with stats:
-            usage_df = get_current_month_usage_df(st.session_state['email'])
-            st.write(f"Wykorzystane obrazki")
+            if 'selected_main' in st.session_state and st.session_state.selected_main == "Inne":
+                base_prompt = "black and white line art, losowa czarno-biała sceneria dla danego"
+                user_input = st.text_area("Napisz jaki obrazek chcesz wygenerować:", height=200, max_chars=30)
+                st.session_state['user_input'] = user_input
+                is_disabled = not st.session_state['user_input'].strip()
 
-            max_pic = FREE_USER_MAX_PIC if not st.session_state.get("user_subscribed") else PREMIUM_USER_MAX_PIC
-            st.metric(" ", f"{usage_df['generations'].sum()} / {max_pic}")
+                if st.button("Wygeneruj obraz", disabled=is_disabled) and st.session_state['user_input'].strip():
+                    
+                    try:
+                        if is_content_appropriate(user_input, openai_client):
+                            image_url = generate_image(f"{base_prompt} {st.session_state['user_input']}")
+                            st.session_state['generated_images'].append(("Własny obraz", image_url))
+                        else:
+                            st.warning("Podany tekst nie jest odpowiedni. Proszę spróbować ponownie.")
+                    except Exception as e:
+                        st.error(f"Wystąpił błąd: {str(e)}")
 
-        #  # Dodanie przycisku "Subscribe Now!"
-        # subscribe_url = "https://buymeacoffee.com/piotrek88/membership"
-        # st.write(f"[Subscribe Now!]({subscribe_url})", unsafe_allow_html=True)
+            if 'selected_main' in st.session_state and st.session_state.selected_main in ["Zwierzaki", "Pojazdy"]:
+                sub_images = sub_animal if st.session_state.selected_main == "Zwierzaki" else sub_vehicles
+                sub_cols = st.columns(5)
+                for index, (name, path) in enumerate(sub_images.items()):
+                    with sub_cols[index % 5]:
+                        st.image(path)
+                        if st.button(name, use_container_width=True):
+                            image_url = generate_image(options[name] + f" Obraz: {name}")
+                            st.session_state['generated_images'].append((name, image_url))
 
-        # if st.button("Log off"):
-        #     # Wyczyść stany logowania
-        #     st.session_state.pop("email", None)
-        #     st.rerun()
+            if st.session_state['generated_images']:
+                name, image_url = st.session_state['generated_images'][-1]
+                st.image(image_url, caption=f"Obraz {name}")
+
+                try:
+                    image_data = download_image(image_url)
+                    col1, col2, col3 = st.columns(3)
+                    with col2:
+                        st.download_button(
+                            label=f"Pobierz {name}",
+                            data=image_data,
+                            file_name=f"{name}.png",
+                            mime="image/png",
+                            key=f"download_{name}"
+                        )
+                except Exception as e:
+                    st.error(f"Nie udało się pobrać obrazu: {e}")
+
+    with st.sidebar:
+        st.image(os.path.join("appart", "BEZ TLA.png"), width=180)
+        st.link_button("Polityka prywatności", "https://garr.fra1.cdn.digitaloceanspaces.com/CreativePaintings/privacy_policy.pdf")
+        st.link_button("Regulamin", "https://garr.fra1.cdn.digitaloceanspaces.com/CreativePaintings/regulations.pdf")
+
+        if st.session_state.get('email'):
+            account, stats = st.tabs(["Konto", "Statystyki"])
+            with account:
+                st.write(f"Jesteś zalogowano jako: {st.session_state['email']}")
+                st.write(f"Aktywna subskrypcja: {'**Premium**' if st.session_state.get('user_subscribed') else '**Darmowa**'}")
+
+            with stats:
+                usage_df = get_current_month_usage_df(st.session_state['email'])
+                st.write(f"Wykorzystane obrazki")
+                max_pic = FREE_USER_MAX_PIC if not st.session_state.get("user_subscribed") else PREMIUM_USER_MAX_PIC
+                st.metric(" ", f"{usage_df['generations'].sum()} / {max_pic}")
+
+if __name__ == "__main__":
+    main()
