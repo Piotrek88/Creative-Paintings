@@ -278,7 +278,7 @@ def main():
                 if st.button("Wygeneruj obraz", disabled=is_disabled) and st.session_state['user_input'].strip():
                     
                     try:
-                        if is_content_appropriate(user_input, openai_client):
+                        if is_content_appropriate(user_input):
                             image_url = generate_image(f"{base_prompt} {st.session_state['user_input']}")
                             st.session_state['generated_images'].append(("Własny obraz", image_url))
                         else:
