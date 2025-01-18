@@ -228,7 +228,7 @@ def allow_usage():
     return True, ""
 
 def is_content_appropriate(user_input):
-    response = openai.Moderation.create(
+    response = openai.moderations.create(
         model="text-moderation-latest",  # Sprawdź dostępne wersje modelu
         input=user_input,
     )
