@@ -227,9 +227,10 @@ def allow_usage():
 
     return True, ""
 
-def is_content_appropriate(user_input, openai_client):
-    response = openai_client.Moderation.create(input=user_input)
-
+def is_content_appropriate(user_input):
+    response = openai_client.Moderation.create(
+        input=user_input,
+    )
     if response and 'results' in response:
         categories = response['results'][0]['categories']
         flagged = any(categories.values())
