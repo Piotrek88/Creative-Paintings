@@ -228,27 +228,14 @@ def allow_usage():
     return True, ""
 
 def is_content_appropriate(user_input, openai_client):
-    moderation_url = "https://api.openai.com/v1/moderations"
-    headers = {
-        "Authorization": f"Bearer {openai_client}",
-        "Content-Type": "application/json"
-    }
-    data = {
-        "input": user_input
-    }
+    response = openai_client.Moderation.create(input=user_input)
 
-    # Wykonaj żądanie POST do Moderation Endpoint
-    response = requests.post(moderation_url, headers=headers, json=data)
-    moderation_response = response.json()
-
-    # Sprawdź wynik
-    if response.status_code == 200 and 'results' in moderation_response:
-        categories = moderation_response['results'][0]['categories']
+    if response and 'results' in response:
+        categories = response['results'][0]['categories']
         flagged = any(categories.values())
         return not flagged  # Zwróć True, jeśli treść jest odpowiednia
     else:
         raise Exception("Problem z połączeniem lub niedostępne dane")
-
 
 #### MAIN ####
 
