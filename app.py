@@ -281,15 +281,15 @@ def main():
                 is_disabled = not st.session_state['user_input'].strip()
 
                 if st.button("Wygeneruj obraz", disabled=is_disabled) and st.session_state['user_input'].strip():
-                    
                     try:
                         if is_content_appropriate(user_input):
                             image_url = generate_image(f"{base_prompt} {st.session_state['user_input']}")
                             st.session_state['generated_images'].append(("Własny obraz", image_url))
+                            st.write("Tresc jest odpowiednia")
                         else:
                             st.warning("Podany tekst nie jest odpowiedni. Proszę spróbować ponownie.")
                     except Exception as e:
-                        st.error(f"Wystąpił błąd: {str(e)}")
+                        st.error(f"Wystąpił błąd: {e}")
 
             if 'selected_main' in st.session_state and st.session_state.selected_main in ["Zwierzaki", "Pojazdy"]:
                 sub_images = sub_animal if st.session_state.selected_main == "Zwierzaki" else sub_vehicles
