@@ -9,7 +9,6 @@ from datetime import datetime, timezone
 import pandas as pd # type: ignore
 import openai
 
-
 styl_css = """
 <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 <style>
@@ -190,7 +189,7 @@ options = {
 
 
 
-openai.api_key = OpenAI(api_key=st.secrets["openai_api_key"])
+openai.api_key=(st.secrets["openai_api_key"])
 openai_client = OpenAI(api_key=st.secrets["openai_api_key"])
 
 
@@ -229,16 +228,20 @@ def allow_usage():
     return True, ""
 
 def is_content_appropriate(user_input):
-    response = openai.moderations.create(
-        model="omni-moderation-latest",
-        input=f"{user_input}",
+    response = openai.Moderation.create(
+        model="text-moderation-latest",  # Sprawdź dostępne wersje modelu
+        input=user_input,
     )
+
+    # Debugowanie odpowiedzi
+    st.write("Wprowadzony tekst:", response)
+
     if response and 'results' in response:
         categories = response['results'][0]['categories']
         flagged = any(categories.values())
-        return not flagged  # Zwróć True, jeśli treść jest odpowiednia
+        return not flagged  # Zwraca True, jeśli treść jest odpowiednia
     else:
-        raise Exception("Podane sformułowanie jest niezgodne z regulaminem")
+        raise Exception("Nie udało się uzyskać poprawnych danych z API")
 
 #### MAIN ####
 
