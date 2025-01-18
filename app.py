@@ -227,7 +227,7 @@ def allow_usage():
 
     return True, ""
 
-def is_content_appropriate(user_input):
+def is_content_appropriate(user_input, openai_client):
     response = openai_client.Moderation.create(
         input=user_input,
     )
