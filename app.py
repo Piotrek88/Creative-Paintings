@@ -7,6 +7,7 @@ import os
 from st_paywall import add_auth   # type: ignore
 from datetime import datetime, timezone
 import pandas as pd # type: ignore
+import openai
 
 
 styl_css = """
@@ -189,7 +190,7 @@ options = {
 
 
 
-
+openai.api_key = OpenAI(api_key=st.secrets["openai_api_key"])
 openai_client = OpenAI(api_key=st.secrets["openai_api_key"])
 
 
@@ -228,15 +229,16 @@ def allow_usage():
     return True, ""
 
 def is_content_appropriate(user_input):
-    response = openai_client.moderations.create(
-        input=user_input,
+    response = openai.moderations.create(
+        model="omni-moderation-latest",
+        input=f"{user_input}",
     )
     if response and 'results' in response:
         categories = response['results'][0]['categories']
         flagged = any(categories.values())
         return not flagged  # Zwróć True, jeśli treść jest odpowiednia
     else:
-        raise Exception("Problem z połączeniem lub niedostępne dane")
+        raise Exception("Podane sformułowanie jest niezgodne z regulaminem")
 
 #### MAIN ####
 
@@ -250,8 +252,8 @@ def main():
     try:
         add_auth(
             required=False,
-            login_sidebar=True,
-            login_button_text="Log in",
+            login_sidebar=False,
+            login_button_text="Zaloguj się",
         )
     except KeyError:
         pass
