@@ -228,7 +228,7 @@ def allow_usage():
     return True, ""
 
 def is_content_appropriate(user_input):
-    response = openai_client.Moderation.create(
+    response = openai_client.moderations.create(
         input=user_input,
     )
     if response and 'results' in response:
