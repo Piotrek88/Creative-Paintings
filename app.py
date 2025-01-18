@@ -227,6 +227,28 @@ def allow_usage():
 
     return True, ""
 
+def is_content_appropriate(user_input, openai_client):
+    moderation_url = "https://api.openai.com/v1/moderations"
+    headers = {
+        "Authorization": f"Bearer {openai_client}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "input": user_input
+    }
+
+    # Wykonaj żądanie POST do Moderation Endpoint
+    response = requests.post(moderation_url, headers=headers, json=data)
+    moderation_response = response.json()
+
+    # Sprawdź wynik
+    if response.status_code == 200 and 'results' in moderation_response:
+        categories = moderation_response['results'][0]['categories']
+        flagged = any(categories.values())
+        return not flagged  # Zwróć True, jeśli treść jest odpowiednia
+    else:
+        raise Exception("Problem z połączeniem lub niedostępne dane")
+
 
 #### MAIN ####
 
@@ -266,9 +288,16 @@ if st.session_state.get('email'):
             st.session_state['user_input'] = user_input
             is_disabled = not st.session_state['user_input'].strip()
 
-            if st.button("Wygeneruj obraz", disabled=is_disabled) and st.session_state['user_input'].strip():
-                image_url = generate_image(f"{base_prompt} + ('') + {st.session_state['user_input']}")
-                st.session_state['generated_images'].append(("Własny obraz", image_url))
+        if st.button("Wygeneruj obraz", disabled=is_disabled) and st.session_state['user_input'].strip():
+            
+            try:
+                if is_content_appropriate(user_input, openai_client):
+                    image_url = generate_image(f"{base_prompt} {st.session_state['user_input']}")
+                    st.session_state['generated_images'].append(("Własny obraz", image_url))
+                else:
+                    st.warning("Podany tekst nie jest odpowiedni. Proszę spróbować ponownie.")
+            except Exception as e:
+                st.error(f"Wystąpił błąd: {str(e)}")
 
         # Logika dla podkategorii Zwierzaki lub Pojazdy
         if 'selected_main' in st.session_state and st.session_state.selected_main in ["Zwierzaki", "Pojazdy"]:
