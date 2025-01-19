@@ -161,6 +161,7 @@ sub_vehicles= {
 
 
 max_chars= 30
+base_prompt = "black and white line art, losowa czarno-biała sceneria dla danego"
 
 options = {
     "Pies": "black and white line art, dog, losowa czarno-biała sceneria dla danego zwierzęcia",
@@ -230,15 +231,15 @@ def allow_usage():
 def is_content_appropriate(user_input):
     response = openai_client.moderations.create(
     model="omni-moderation-latest",
-    input=user_input,
+    input= base_prompt + user_input,
 )
     category_scores = response.results[0].category_scores.model_dump()
 
     for category, score in category_scores.items():
-        if score >= 0.017:
+        if score > 0.02:
             st.write(f"Alert: Treść jest nieodpowiednia, dokonaj zmian")
             return False
-        
+        else
 
 #### MAIN ####
 
@@ -272,7 +273,6 @@ def main():
                         st.session_state.generated_images = []
 
             if 'selected_main' in st.session_state and st.session_state.selected_main == "Inne":
-                base_prompt = "black and white line art, losowa czarno-biała sceneria dla danego"
                 user_input = st.text_area("Napisz jaki obrazek chcesz wygenerować:", height=200, max_chars=30)
                 st.session_state['user_input'] = user_input
                 is_disabled = not st.session_state['user_input'].strip()
