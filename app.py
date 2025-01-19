@@ -7,7 +7,7 @@ import os
 from st_paywall import add_auth   # type: ignore
 from datetime import datetime, timezone
 import pandas as pd # type: ignore
-import openai
+
 
 styl_css = """
 <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
@@ -189,7 +189,7 @@ options = {
 
 
 
-openai.api_key=(st.secrets["openai_api_key"])
+
 openai_client = OpenAI(api_key=st.secrets["openai_api_key"])
 
 
@@ -228,20 +228,17 @@ def allow_usage():
     return True, ""
 
 def is_content_appropriate(user_input):
-    response = openai.moderations.create(
-        model="text-moderation-latest",  # Sprawdź dostępne wersje modelu
-        input=user_input,
-    )
+    response = openai_client.moderations.create(
+    model="omni-moderation-latest",
+    input=user_input,
+)
+    category_scores = response.results[0].category_scores.model_dump()
 
-    # Debugowanie odpowiedzi
-    st.write("Wprowadzony tekst:", response)
-
-    if response and 'results' in response:
-        categories = response['results'][0]['categories']
-        flagged = any(categories.values())
-        return not flagged  # Zwraca True, jeśli treść jest odpowiednia
-    else:
-        raise Exception("Nie udało się uzyskać poprawnych danych z API")
+    for category, score in category_scores.items():
+        if score >= 0.017:
+            st.write(f"Alert: Treść jest nieodpowiednia, dokonaj zmian")
+            return False
+        
 
 #### MAIN ####
 

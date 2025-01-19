@@ -2,3 +2,6 @@ privacy_policy.pdf
 regulations.pdf
 control_database.ipynb
 secrets.toml
+checknet.ipynb
+.streamlit
+.ipynb_checkpoints
