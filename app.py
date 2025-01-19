@@ -231,15 +231,15 @@ def allow_usage():
 def is_content_appropriate(user_input):
     response = openai_client.moderations.create(
     model="omni-moderation-latest",
-    input= base_prompt + user_input,
+    input= ({base_prompt} + {user_input}),
 )
     category_scores = response.results[0].category_scores.model_dump()
-
+    seen = set()
     for category, score in category_scores.items():
-        if score > 0.02:
-            st.write(f"Alert: Treść jest nieodpowiednia, dokonaj zmian")
+        if score > 0.13 and category not in seen:
+            st.write(f"Alert: Treść jest nieodpowiednia, dokonaj zmian!")
             return False
-        else
+        
 
 #### MAIN ####
 
@@ -282,7 +282,6 @@ def main():
                         if is_content_appropriate(user_input):
                             image_url = generate_image(f"{base_prompt} {st.session_state['user_input']}")
                             st.session_state['generated_images'].append(("Własny obraz", image_url))
-                            st.write("Tresc jest odpowiednia")
                         else:
                             st.warning("Podany tekst nie jest odpowiedni. Proszę spróbować ponownie.")
                     except Exception as e:
