@@ -229,17 +229,21 @@ def allow_usage():
     return True, ""
 
 def is_content_appropriate(user_input):
-    response = openai_client.moderations.create(
-    model="omni-moderation-latest",
-    input= base_prompt + user_input,
-)
-    category_scores = response.results[0].category_scores.model_dump()
-    seen = set()
-    for category, score in category_scores.items():
-        if score > 0.13 and category not in seen:
-            st.write(f"Alert: Treść jest nieodpowiednia, dokonaj zmian!")
-            return False
-        
+    try:
+        response = openai_client.moderations.create(
+            model="omni-moderation-latest",
+            input=base_prompt + user_input,
+        )
+        category_scores = response.results[0].category_scores.model_dump()
+
+        for category, score in category_scores.items():
+            if score > 0.13:
+                st.write("Alert: Treść jest nieodpowiednia, dokonaj zmian!")
+                return False
+        return True
+    except Exception as e:
+        st.error(f"Wystąpił błąd podczas sprawdzania treści: {e}")
+        return False
 
 #### MAIN ####
 
