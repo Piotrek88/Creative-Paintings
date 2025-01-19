@@ -231,7 +231,7 @@ def allow_usage():
 def is_content_appropriate(user_input):
     response = openai_client.moderations.create(
     model="omni-moderation-latest",
-    input= ({base_prompt} + {user_input}),
+    input= base_prompt + user_input,
 )
     category_scores = response.results[0].category_scores.model_dump()
     seen = set()
